@@ -12,6 +12,8 @@ export const LogoContainer = styled.View`
   width: 100%;
   height: 200;
   background-color: #bb86fc;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
 `;
 
 export const Logo = styled.Image`

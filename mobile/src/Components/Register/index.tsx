@@ -13,7 +13,6 @@ import {
   Logo,
 } from './style';
 import {useNavigation} from '@react-navigation/native';
-import firebase from 'react-native-firebase';
 import * as images from '../../../assets/images';
 
 const Register = () => {
@@ -28,11 +27,7 @@ const Register = () => {
   }
 
   function register() {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => console.log('registrado'))
-      .catch((error) => console.log(error));
+
   }
 
   return (
