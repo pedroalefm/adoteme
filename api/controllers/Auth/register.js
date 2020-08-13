@@ -13,7 +13,6 @@ function generateToken(params = {}) {
 exports.Register = async (req, res) => {
   try {
     const user = await User.create(req.body);
-
     return res.send({ user, token: generateToken({ id: user.id }) });
   } catch (e) {
     return res.status(400).send({ error: e });

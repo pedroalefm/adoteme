@@ -14,6 +14,7 @@ import {
 } from './style';
 import {useNavigation} from '@react-navigation/native';
 import * as images from '../../../assets/images';
+import {registerUser} from '../../../provider/auth';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -26,8 +27,14 @@ const Register = () => {
     navigation.navigate('Login');
   }
 
-  function register() {
+  async function register() {
+    const newUser = {
+      name: name,
+      password: password,
+      email: email,
+    };
 
+    const user = await registerUser(newUser);
   }
 
   return (
@@ -38,18 +45,18 @@ const Register = () => {
       <FormContainer>
         <InputContainer>
           <InputLabel>E-mail</InputLabel>
-          <Input value={email} onChange={(value) => setEmail(value)} />
+          <Input value={email} onChangeText={(value) => setEmail(value)} />
         </InputContainer>
 
         <InputContainer>
           <InputLabel>Nome</InputLabel>
-          <Input value={name} onChange={(value) => setName(value)} />
+          <Input value={name} onChangeText={(value) => setName(value)} />
         </InputContainer>
         <InputContainer>
           <InputLabel>Senha</InputLabel>
           <Input
             value={password}
-            onChange={(value) => setPassword(value)}
+            onChangeText={(value) => setPassword(value)}
             secureTextEntry
           />
         </InputContainer>

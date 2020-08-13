@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Container,
   Title,
@@ -14,11 +14,14 @@ import {
   Logo,
 } from './style';
 import * as images from '../../../assets/images';
-
+import {loginUser} from '../../../provider/auth';
 import {useNavigation} from '@react-navigation/native';
 
 const Login = () => {
   const navigation = useNavigation();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   React.useEffect(
     () =>
@@ -33,6 +36,11 @@ const Login = () => {
     navigation.navigate('Register');
   }
 
+  async function login() {
+    const user = await loginUser(email, password);
+    console.log(user);
+  }
+
   return (
     <Container>
       <LogoContainer>
@@ -41,14 +49,23 @@ const Login = () => {
       <LoginContainer>
         <InputContainer>
           <InputLabel>E-mail</InputLabel>
-          <Input numberOfLines={1} />
+          <Input
+            numberOfLines={1}
+            value={email}
+            onChangeText={(value) => setEmail(value)}
+          />
         </InputContainer>
         <InputContainer>
           <InputLabel>Senha</InputLabel>
-          <Input numberOfLines={1} />
+          <Input
+            numberOfLines={1}
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+            secureTextEntry
+          />
         </InputContainer>
       </LoginContainer>
-      <BtnLoginContainer>
+      <BtnLoginContainer onPress={() => login()}>
         <BtnLoginText>Entrar</BtnLoginText>
       </BtnLoginContainer>
       <RegisterBtnContainer onPress={() => navRegister()}>
