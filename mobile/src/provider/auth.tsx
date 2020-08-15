@@ -44,7 +44,7 @@ export async function loginUser(email: String, password: String): Promise<any> {
         return response.data.user;
       })
       .catch(function (error) {
-        console.log(error);
+        return error.response.data;
       });
 
     return user;

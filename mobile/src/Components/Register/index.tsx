@@ -14,7 +14,8 @@ import {
 } from './style';
 import {useNavigation} from '@react-navigation/native';
 import * as images from '../../../assets/images';
-import {registerUser} from '../../../provider/auth';
+import {registerUser} from '../../provider/auth';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -22,6 +23,8 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   function navLogin(): void {
     navigation.navigate('Login');
@@ -34,7 +37,13 @@ const Register = () => {
       email: email,
     };
 
-    const user = await registerUser(newUser);
+    if (!name || !password || !email) {
+      setAlertMessage('Estão faltando dados!');
+      setShowAlert(true);
+    } else {
+      const user = await registerUser(newUser);
+      navigation.navigate('HomeScreen');
+    }
   }
 
   return (
@@ -45,22 +54,41 @@ const Register = () => {
       <FormContainer>
         <InputContainer>
           <InputLabel>E-mail</InputLabel>
-          <Input value={email} onChangeText={(value) => setEmail(value)} />
+          <Input value={email} onChangeText={(value: any) => setEmail(value)} />
         </InputContainer>
 
         <InputContainer>
           <InputLabel>Nome</InputLabel>
-          <Input value={name} onChangeText={(value) => setName(value)} />
+          <Input value={name} onChangeText={(value: any) => setName(value)} />
         </InputContainer>
         <InputContainer>
           <InputLabel>Senha</InputLabel>
           <Input
             value={password}
-            onChangeText={(value) => setPassword(value)}
+            onChangeText={(value: any) => setPassword(value)}
             secureTextEntry
           />
         </InputContainer>
       </FormContainer>
+      <AwesomeAlert
+        show={showAlert}
+        showProgress={false}
+        title="Problema no registro!"
+        message={alertMessage}
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={false}
+        showCancelButton={false}
+        showConfirmButton={true}
+        cancelText="No, cancel"
+        confirmText="Fechar"
+        confirmButtonColor="#6200ee"
+        onCancelPressed={() => {
+          setShowAlert(false);
+        }}
+        onConfirmPressed={() => {
+          setShowAlert(false);
+        }}
+      />
       <BtnRegisterContainer onPress={() => register()}>
         <BtnRegisterText>Criar conta</BtnRegisterText>
       </BtnRegisterContainer>
