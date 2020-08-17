@@ -1,1 +1,1 @@
-export const Loader = require('./loaderadote.json');
+export const Loader = require('./dog.json');

@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import * as images from '../../../assets/images';
 import {registerUser} from '../../provider/auth';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import Loader from '../../components/loader';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -25,6 +26,7 @@ const Register = () => {
   const [name, setName] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [showLoader, setShowLoader] = useState(false);
 
   function navLogin(): void {
     navigation.navigate('Login');
@@ -41,13 +43,17 @@ const Register = () => {
       setAlertMessage('Estão faltando dados!');
       setShowAlert(true);
     } else {
+      setShowLoader(true);
       const user = await registerUser(newUser);
+      setShowLoader(false);
       navigation.navigate('HomeScreen');
     }
   }
 
   return (
     <Container>
+      <Loader showLoader={showLoader} />
+
       <LogoContainer>
         <Logo source={images.Logo} />
       </LogoContainer>

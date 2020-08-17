@@ -19,15 +19,16 @@ import {loginUser} from '../../provider/auth';
 import {useNavigation} from '@react-navigation/native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import LottieView from 'lottie-react-native';
+import Loader from '../../components/loader';
 
 const Login = () => {
   const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [load, setLoad] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [showLoader, setShowLodear] = useState(false);
 
   React.useEffect(
     () =>
@@ -43,23 +44,32 @@ const Login = () => {
   }
 
   async function login() {
-    const user = await loginUser(email, password);
-    console.log(user);
-    if (user) {
-      if (user.error) {
-        setAlertMessage(user.error);
-        setShowAlert(true);
-      } else {
-        navigation.navigate('HomeScreen');
-      }
-    } else {
-      setAlertMessage('Usuário não encontrado!');
+    if (!email || !password) {
+      setAlertMessage('Estão faltando dados!');
       setShowAlert(true);
+    } else {
+      setShowLodear(true);
+      const user = await loginUser(email, password);
+      setShowLodear(false);
+
+      if (user) {
+        if (user.error) {
+          setAlertMessage(user.error);
+          setShowAlert(true);
+        } else {
+          navigation.navigate('HomeScreen');
+        }
+      } else {
+        setAlertMessage('Usuário não encontrado!');
+        setShowAlert(true);
+      }
     }
   }
 
   return (
     <Container>
+      <Loader showLoader={showLoader} />
+
       <LogoContainer>
         <Logo source={images.Logo} />
       </LogoContainer>
@@ -101,11 +111,6 @@ const Login = () => {
           setShowAlert(false);
         }}
       />
-      {/* <LottieView
-        source={require('../../../assets/animations/loaderadote.json')}
-        autoPlay
-        loop
-      /> */}
       <BtnLoginContainer onPress={() => login()}>
         <BtnLoginText>Entrar</BtnLoginText>
       </BtnLoginContainer>

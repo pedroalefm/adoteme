@@ -2,10 +2,10 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
-import Splash from '../../Components/Splash';
-import Login from '../../Components/Login';
-import Register from '../../Components/Register';
-import Home from '../../Components/Home';
+import Splash from '../../pages/Splash';
+import Login from '../../pages/Login';
+import Register from '../../pages/Register';
+import Home from '../../pages/Home';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
