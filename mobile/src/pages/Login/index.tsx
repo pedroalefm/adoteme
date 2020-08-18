@@ -20,6 +20,7 @@ import {useNavigation} from '@react-navigation/native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import LottieView from 'lottie-react-native';
 import Loader from '../../components/loader';
+import {useUser} from '../../context/User';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -29,6 +30,7 @@ const Login = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showLoader, setShowLodear] = useState(false);
+  const {user, setUser} = useUser();
 
   React.useEffect(
     () =>
@@ -49,12 +51,12 @@ const Login = () => {
       setShowAlert(true);
     } else {
       setShowLodear(true);
-      const user = await loginUser(email, password);
+      const userLogged = await loginUser(email, password);
       setShowLodear(false);
-
-      if (user) {
-        if (user.error) {
-          setAlertMessage(user.error);
+      setUser(userLogged);
+      if (userLogged) {
+        if (userLogged.error) {
+          setAlertMessage(userLogged.error);
           setShowAlert(true);
         } else {
           navigation.navigate('HomeScreen');
