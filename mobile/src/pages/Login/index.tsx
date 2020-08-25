@@ -21,6 +21,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import LottieView from 'lottie-react-native';
 import Loader from '../../components/loader';
 import {useUser} from '../../context/User';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ const Login = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showLoader, setShowLodear] = useState(false);
-  const {user, setUser} = useUser();
+  const {setUser} = useUser();
 
   React.useEffect(
     () =>
@@ -53,6 +54,15 @@ const Login = () => {
       setShowLodear(true);
       const userLogged = await loginUser(email, password);
       setShowLodear(false);
+      AsyncStorage.multiSet(
+        [
+          ['email', userLogged.email ? userLogged.email.toString() : ''],
+          ['name', userLogged.name ? userLogged.name.toString() : ''],
+        ],
+        (e) => {
+          //console.log(e);
+        },
+      );
       setUser(userLogged);
       if (userLogged) {
         if (userLogged.error) {

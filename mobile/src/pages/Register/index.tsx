@@ -17,6 +17,8 @@ import * as images from '../../../assets/images';
 import {registerUser} from '../../provider/auth';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import Loader from '../../components/loader';
+import AsyncStorage from '@react-native-community/async-storage';
+import {useUser} from '../../context/User';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -27,6 +29,7 @@ const Register = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showLoader, setShowLoader] = useState(false);
+  const {setUser} = useUser();
 
   function navLogin(): void {
     navigation.navigate('Login');
@@ -44,7 +47,17 @@ const Register = () => {
       setShowAlert(true);
     } else {
       setShowLoader(true);
-      const user = await registerUser(newUser);
+      const userLogged = await registerUser(newUser);
+      AsyncStorage.multiSet(
+        [
+          ['email', userLogged.email ? userLogged.email.toString() : ''],
+          ['name', userLogged.name ? userLogged.name.toString() : ''],
+        ],
+        (e) => {
+          //console.log(e);
+        },
+      );
+      setUser(userLogged);
       setShowLoader(false);
       navigation.navigate('HomeScreen');
     }

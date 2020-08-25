@@ -6,6 +6,8 @@ import Splash from '../../pages/Splash';
 import Login from '../../pages/Login';
 import Register from '../../pages/Register';
 import Home from '../../pages/Home';
+import {View, Text} from 'react-native';
+import CustomDrawer from '../../components/drawer';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -13,7 +15,9 @@ const Drawer = createDrawerNavigator();
 function Routes() {
   function HomeScreen() {
     return (
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawer />}
+        initialRouteName="Home">
         <Drawer.Screen name="Home" component={Home} />
       </Drawer.Navigator>
     );
